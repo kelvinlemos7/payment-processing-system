@@ -5,8 +5,14 @@ import domain.Recibo;
 
 public class CartaoCreditoPagamento implements Pagamento {
 
+    private static final double TAXA_CARTAO = 0.02;
+
     @Override
     public Recibo pagar(double valor) {
-        return new Recibo("Cartão de Crédito", valor);
+
+        double taxa = valor * TAXA_CARTAO;
+        double valorFinal = valor + taxa;
+
+        return new Recibo("Cartão de Crédito", valorFinal, taxa);
     }
 }

@@ -7,6 +7,6 @@ public class PixPagamento implements Pagamento {
 
     @Override
     public Recibo pagar(double valor) {
-        return new Recibo("PIX", valor);
+        return new Recibo("PIX", valor, 0.0);
     }
 }
