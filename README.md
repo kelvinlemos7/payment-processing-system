@@ -1,52 +1,100 @@
-#  Sistema de Pagamentos - Java
+# Sistema de Pagamentos em Java
 
-Este repositório contém um exemplo de **polimorfismo em Java**, aplicado a um **domínio financeiro simples**.
+Este projeto é um mini sistema de pagamentos em Java, desenvolvido com foco em Programação Orientada a Objetos (POO) e Engenharia de Software.
 
-O objetivo é demonstrar como o uso de **interfaces como contrato** permite desacoplar a **regra de negócio** das implementações concretas.
+A aplicação simula um domínio financeiro simples, utilizando interfaces como contrato e polimorfismo para desacoplar a regra de negócio das implementações concretas, seguindo princípios utilizados em sistemas backend reais.
 
 ---
 
-## 🧠 Conceitos aplicados
+## Conceitos aplicados
+
+- Programação Orientada a Objetos (POO)
 - Polimorfismo
-- Interface como contrato
+- Interfaces como contrato
 - Baixo acoplamento
-- Princípio **Open/Closed** (SOLID)
-- Arquitetura em camadas (Domain, Infra, Service)
+- Open/Closed Principle (SOLID)
+- Arquitetura em camadas
+- Clean Code
 
 ---
 
-## 📦 Estrutura do sistema
-O sistema possui um **Processador de Pagamentos** que trabalha com diferentes formas de pagamento:
+## Arquitetura do projeto
 
-- **PIX**
-- **Cartão de Crédito**
-- **Boleto**
+Estrutura de pastas:
 
-Cada pagamento gera um **Recibo** com informações do método e do valor pago.  
-O **ProcessadorPagamento** depende apenas da interface **Pagamento**, sem conhecer detalhes das implementações.  
-
-O sistema imprime os recibos de cada pagamento no console.
-
----
-
-## ▶️ Como executar
-
-Clone o repositório:
-```bash
-git clone https://github.com/SeuUsuario/payment-processing-system.git
 ```
+src/
+ ├─ domain/
+ │   ├─ Pagamento.java
+ │   └─ Recibo.java
+ ├─ infra/
+ │   ├─ PixPagamento.java
+ │   ├─ CartaoCreditoPagamento.java
+ │   └─ BoletoPagamento.java
+ ├─ service/
+ │   └─ ProcessadorPagamento.java
+ └─ Main.java
+```
+---
 
-## 📌 Observação
+## Responsabilidade das camadas
 
-Projeto desenvolvido com foco em aprendizado e prática de conceitos fundamentais de Engenharia de Software, incluindo:
+domain/  
+Contém os contratos e objetos de negócio do sistema.  
+Inclui a interface Pagamento e a classe Recibo.
 
-Polimorfismo
+infra/  
+Implementações concretas dos métodos de pagamento  
+(PIX, Cartão de Crédito e Boleto).
 
-Interfaces
+service/  
+Camada responsável por orquestrar o fluxo de pagamento  
+(ProcessadorPagamento).
 
-Baixo acoplamento
+Main.java  
+Ponto de entrada da aplicação.
 
-Princípio Open/Closed (SOLID)
+---
 
-Arquitetura limpa e em camadas
+## Funcionamento do sistema
 
+O sistema possui um Processador de Pagamentos que depende apenas da interface Pagamento.
+
+Cada forma de pagamento:
+- executa sua própria regra
+- retorna um objeto Recibo
+- não expõe detalhes internos ao serviço
+
+Regras atuais do sistema:
+
+PIX  
+Não possui taxa.
+
+Cartão de Crédito  
+Taxa de 2 por cento sobre o valor.
+
+Boleto  
+Desconto fixo de R$ 3,50.
+
+O resultado de cada pagamento é exibido no console.
+
+---
+
+## Como executar
+
+1. Clonar o repositório  
+```git clone https://github.com/kelvinlemos7/payment-processing-system.git```
+
+2. Compilar o projeto  
+```javac -d out src/**/*.java```
+
+3. Executar a aplicação  
+```java -cp out Main```
+
+---
+
+## Observação
+
+Projeto desenvolvido com foco em aprendizado prático, reforçando conceitos fundamentais de POO, polimorfismo, arquitetura limpa e princípios SOLID.
+
+A estrutura foi pensada para permitir extensões futuras, como novos métodos de pagamento, sem necessidade de alterar código existente.
