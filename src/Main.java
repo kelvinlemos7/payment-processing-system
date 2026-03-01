@@ -16,8 +16,8 @@ public class Main {
         Pagamento boleto = new BoletoPagamento();
 
         Recibo reciboPix = processador.processar(pix, 150.00);
-        Recibo reciboCartao = processador.processar(boleto, 320.00);
-        Recibo reciboBoleto = processador.processar(cartao, 90);
+        Recibo reciboCartao = processador.processar(cartao, 320.00);
+        Recibo reciboBoleto = processador.processar(boleto, 90);
 
         System.out.println(reciboPix.resumo());
         System.out.println(reciboCartao.resumo());
