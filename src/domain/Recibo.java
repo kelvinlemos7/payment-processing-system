@@ -5,7 +5,7 @@ import java.time.format.DateTimeFormatter;
 
 public class Recibo {
 
-    private final String metodo;
+    private final MetodoPagamento metodo;
     private final double valorFinal;
     private final double ajuste;
     private final LocalDateTime dataRecibo;
@@ -13,7 +13,7 @@ public class Recibo {
     private static final DateTimeFormatter FORMATADOR =
             DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
-    public Recibo(String metodo, double valorFinal, double ajuste) {
+    public Recibo(MetodoPagamento metodo, double valorFinal, double ajuste) {
         this.metodo = metodo;
         this.valorFinal = valorFinal;
         this.ajuste = ajuste;
@@ -33,7 +33,7 @@ public class Recibo {
             textoAjuste = "Sem taxas";
         }
 
-        return "Metodo: " + metodo +
+        return "Metodo: " + metodo.toString() +
                " | Valor: R$ " + valorFinal +
                " | " + textoAjuste +
                " | Data: " + dataFormatada;
