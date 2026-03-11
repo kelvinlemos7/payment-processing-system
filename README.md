@@ -2,19 +2,20 @@
 
 Este projeto é um mini sistema de pagamentos em Java, desenvolvido com foco em **Programação Orientada a Objetos (POO)** e **Engenharia de Software**.
 
-A aplicação simula um domínio financeiro simples, utilizando **interfaces como contrato** e **polimorfismo** para desacoplar a regra de negócio das implementações concretas, seguindo princípios utilizados em sistemas backend reais.
+A aplicação simula um domínio financeiro simplificado, aplicando **polimorfismo, interfaces como contrato e arquitetura em camadas**, conceitos comuns em sistemas backend reais.
 
 ---
 
 ## Conceitos aplicados
 
-- Programação Orientada a Objetos (POO)  
-- Polimorfismo  
-- Interfaces como contrato  
-- Baixo acoplamento  
-- Open/Closed Principle (SOLID)  
-- Arquitetura em camadas  
-- Clean Code  
+- Programação Orientada a Objetos (POO)
+- Polimorfismo
+- Interfaces como contrato
+- Baixo acoplamento
+- Open/Closed Principle (SOLID)
+- Arquitetura em camadas
+- Clean Code
+- Modelagem de domínio
 
 ---
 
@@ -24,68 +25,110 @@ Estrutura de pastas:
 
 ```
 src/
- ├─ domain/
- │   ├─ Pagamento.java
- │   └─ Recibo.java
- │   └─ MetodoPagamento.java
- ├─ infra/
- │   ├─ PixPagamento.java
- │   ├─ CartaoCreditoPagamento.java
- │   ├─ BoletoPagamento.java
- |   └─ DebitoPagamento.java
- ├─ service/
- │   └─ ProcessadorPagamento.java
- └─ Main.java
+├─ domain/
+│ ├─ Pagamento.java
+│ ├─ Recibo.java
+│ ├─ MetodoPagamento.java
+│ └─ TipoAjuste.java
+├─ infra/
+│ ├─ PixPagamento.java
+│ ├─ CartaoCreditoPagamento.java
+│ ├─ BoletoPagamento.java
+│ └─ DebitoPagamento.java
+├─ service/
+│ └─ ProcessadorPagamento.java
+└─ Main.java
 ```
-
 ---
 
 ## Responsabilidade das camadas
 
 **domain/**  
-Contém os contratos e objetos de negócio do sistema, incluindo a interface `Pagamento`, a classe `Recibo` e o `enum MetodoPagamento`.  
+Contém os contratos e objetos centrais do domínio do sistema.
 
-**infra/**  
-Implementações concretas dos métodos de pagamento (PIX, Cartão de Crédito, Boleto e Débito).  
-
-**service/**  
-Camada responsável por orquestrar o fluxo de pagamento (`ProcessadorPagamento`).  
-
-**Main.java**  
-Ponto de entrada da aplicação.
+- `Pagamento` → interface que define o contrato para qualquer método de pagamento  
+- `Recibo` → representa o resultado da operação de pagamento  
+- `MetodoPagamento` → enum com os métodos disponíveis  
+- `TipoAjuste` → enum que representa o tipo de ajuste financeiro aplicado (taxa, desconto, cashback etc.)
 
 ---
 
-## Funcionamento do sistema
+**infra/**  
+Implementações concretas dos métodos de pagamento:
+
+- PIX  
+- Cartão de Crédito  
+- Boleto  
+- Débito  
+
+Cada implementação aplica suas próprias regras de negócio.
+
+---
+
+**service/**  
+Camada responsável por **orquestrar o fluxo de pagamento**, utilizando apenas a interface `Pagamento`.
+
+Isso permite que novos métodos sejam adicionados sem modificar o processador.
+
+---
+
+**Main.java**
+
+Ponto de entrada da aplicação, onde diferentes pagamentos são simulados.
+
+---
+
+# Funcionamento do sistema
 
 O sistema possui um **Processador de Pagamentos** que depende apenas da interface `Pagamento`.
 
 Cada forma de pagamento:
 
-- Executa sua própria regra  
-- Retorna um objeto `Recibo`  
-- Não expõe detalhes internos ao serviço  
+- Executa sua própria regra
+- Retorna um objeto `Recibo`
+- Mantém o serviço desacoplado da implementação
 
-### Regras atuais do sistema:
+---
 
-**PIX**  
-- Sem taxa  
+# Regras atuais do sistema
 
-**Cartão de Crédito**  
-- Taxa de 2% sobre o valor  
+### PIX
+- Cashback de **5%** sobre o valor pago
 
-**Boleto**  
-- Desconto fixo de R$ 3,50
+### Cartão de Crédito
+- Taxa de **2%** sobre o valor da transação
 
-**Débito**
+### Boleto
+- Desconto fixo de **R$ 3,50**
+
+### Débito
 - Sem taxa
+- Limite diário de **R$ 1000**
+- Caso ultrapasse o limite, uma **exception é lançada**
 
-O resultado de cada pagamento é exibido no console, com data e hora:
+---
+
+## Ajustes financeiros
+
+O sistema utiliza o enum `TipoAjuste` para representar diferentes tipos de modificações no valor final da transação:
+
+- `TAXA`
+- `DESCONTO`
+- `CASHBACK`
+- `JUROS`
+- `NENHUM`
+
+Isso permite que o recibo represente corretamente o impacto financeiro de cada operação.
+
+---
+
+## Exemplo de saída no console
+
 ```
-Metodo: Pix | Valor: R$ 150.0 | Sem taxas | Data: 10/03/2026 20:58
-Metodo: Cartão de Crédito | Valor: R$ 326.4 | Taxa: R$ 6.4 | Data: 10/03/2026 20:58
-Metodo: Boleto | Valor: R$ 86.5 | Desconto: R$ 3.5 | Data: 10/03/2026 20:58
-Metodo: Débito | Valor: R$ 230.0 | Sem taxas | Data: 10/03/2026 20:58
+Metodo: Pix | Valor: R$ 150.0 | Cashback: R$ 7.5 | Data: 11/03/2026 02:00
+Metodo: Cartão de Crédito | Valor: R$ 326.4 | Taxa: R$ 6.4 | Data: 11/03/2026 02:00
+Metodo: Boleto | Valor: R$ 86.5 | Desconto: R$ 3.5 | Data: 11/03/2026 02:00
+Metodo: Débito | Valor: R$ 220.0 | Sem ajustes | Data: 11/03/2026 02:00
 ```
 
 ## Enumeração de métodos de pagamento
@@ -103,9 +146,12 @@ Isso permite adicionar novos métodos facilmente sem alterar código existente.
 
 ## Extensões futuras
 
-- Cashback ou promoções para PIX  
-- Transformação em API RESTful com Spring Boot  
-- Autenticação, logging e monitoramento de transações  
+- Transformação em **API REST com Spring Boot**
+- Integração com banco de dados
+- Logging de transações
+- Autenticação e autorização
+- Histórico de pagamentos
+- Testes unitários
 
 ---
 
