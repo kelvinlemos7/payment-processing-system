@@ -31,7 +31,8 @@ src/
  ├─ infra/
  │   ├─ PixPagamento.java
  │   ├─ CartaoCreditoPagamento.java
- │   └─ BoletoPagamento.java
+ │   ├─ BoletoPagamento.java
+ |   └─ DebitoPagamento.java
  ├─ service/
  │   └─ ProcessadorPagamento.java
  └─ Main.java
