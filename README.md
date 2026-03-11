@@ -1,20 +1,20 @@
 # Sistema de Pagamentos em Java
 
-Este projeto é um mini sistema de pagamentos em Java, desenvolvido com foco em Programação Orientada a Objetos (POO) e Engenharia de Software.
+Este projeto é um mini sistema de pagamentos em Java, desenvolvido com foco em **Programação Orientada a Objetos (POO)** e **Engenharia de Software**.
 
-A aplicação simula um domínio financeiro simples, utilizando interfaces como contrato e polimorfismo para desacoplar a regra de negócio das implementações concretas, seguindo princípios utilizados em sistemas backend reais.
+A aplicação simula um domínio financeiro simples, utilizando **interfaces como contrato** e **polimorfismo** para desacoplar a regra de negócio das implementações concretas, seguindo princípios utilizados em sistemas backend reais.
 
 ---
 
 ## Conceitos aplicados
 
-- Programação Orientada a Objetos (POO)
-- Polimorfismo
-- Interfaces como contrato
-- Baixo acoplamento
-- Open/Closed Principle (SOLID)
-- Arquitetura em camadas
-- Clean Code
+- Programação Orientada a Objetos (POO)  
+- Polimorfismo  
+- Interfaces como contrato  
+- Baixo acoplamento  
+- Open/Closed Principle (SOLID)  
+- Arquitetura em camadas  
+- Clean Code  
 
 ---
 
@@ -27,6 +27,7 @@ src/
  ├─ domain/
  │   ├─ Pagamento.java
  │   └─ Recibo.java
+ │   └─ MetodoPagamento.java
  ├─ infra/
  │   ├─ PixPagamento.java
  │   ├─ CartaoCreditoPagamento.java
@@ -35,48 +36,77 @@ src/
  │   └─ ProcessadorPagamento.java
  └─ Main.java
 ```
+
 ---
 
 ## Responsabilidade das camadas
 
-domain/  
-Contém os contratos e objetos de negócio do sistema.  
-Inclui a interface Pagamento e a classe Recibo.
+**domain/**  
+Contém os contratos e objetos de negócio do sistema, incluindo a interface `Pagamento`, a classe `Recibo` e o `enum MetodoPagamento`.  
 
-infra/  
-Implementações concretas dos métodos de pagamento  
-(PIX, Cartão de Crédito e Boleto).
+**infra/**  
+Implementações concretas dos métodos de pagamento (PIX, Cartão de Crédito, Boleto e Débito).  
 
-service/  
-Camada responsável por orquestrar o fluxo de pagamento  
-(ProcessadorPagamento).
+**service/**  
+Camada responsável por orquestrar o fluxo de pagamento (`ProcessadorPagamento`).  
 
-Main.java  
+**Main.java**  
 Ponto de entrada da aplicação.
 
 ---
 
 ## Funcionamento do sistema
 
-O sistema possui um Processador de Pagamentos que depende apenas da interface Pagamento.
+O sistema possui um **Processador de Pagamentos** que depende apenas da interface `Pagamento`.
 
 Cada forma de pagamento:
-- executa sua própria regra
-- retorna um objeto Recibo
-- não expõe detalhes internos ao serviço
 
-Regras atuais do sistema:
+- Executa sua própria regra  
+- Retorna um objeto `Recibo`  
+- Não expõe detalhes internos ao serviço  
 
-PIX  
-Não possui taxa.
+### Regras atuais do sistema:
 
-Cartão de Crédito  
-Taxa de 2 por cento sobre o valor.
+**PIX**  
+- Sem taxa  
 
-Boleto  
-Desconto fixo de R$ 3,50.
+**Cartão de Crédito**  
+- Taxa de 2% sobre o valor  
 
-O resultado de cada pagamento é exibido no console.
+**Boleto**  
+- Desconto fixo de R$ 3,50
+
+**Débito**
+- Sem taxa
+
+O resultado de cada pagamento é exibido no console, com data e hora:
+```
+Metodo: Pix | Valor: R$ 150.0 | Sem taxas | Data: 10/03/2026 20:58
+Metodo: Cartão de Crédito | Valor: R$ 326.4 | Taxa: R$ 6.4 | Data: 10/03/2026 20:58
+Metodo: Boleto | Valor: R$ 86.5 | Desconto: R$ 3.5 | Data: 10/03/2026 20:58
+Metodo: Débito | Valor: R$ 230.0 | Sem taxas | Data: 10/03/2026 20:58
+```
+
+## Enumeração de métodos de pagamento
+
+O projeto utiliza um `enum` (`MetodoPagamento`) para representar os métodos disponíveis:
+
+- PIX  
+- Cartão de Crédito  
+- Boleto  
+- Débito
+
+Isso permite adicionar novos métodos facilmente sem alterar código existente.
+
+---
+
+## Extensões futuras
+
+- Cashback ou promoções para PIX  
+- Transformação em API RESTful com Spring Boot  
+- Autenticação, logging e monitoramento de transações  
+
+---
 
 ---
 
